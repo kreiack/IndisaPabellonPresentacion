@@ -5,453 +5,817 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Healthpixel | Propuesta Clínica Indisa</title>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        /* Typography: Academic Pairing */
-        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Lato:wght@300;400;700&display=swap');
 
+    <!-- OG Meta Tags -->
+    <meta property="og:title" content="Healthpixel | Propuesta Clínica Indisa">
+    <meta property="og:description"
+        content="Coordinación Quirúrgica Inteligente con IA para Clínica Indisa. Optimización de 21 pabellones con agentes cognitivos.">
+    <meta property="og:type" content="website">
+
+    <style>
         body {
             font-family: 'Lato', sans-serif;
             background-color: #ffffff;
             color: #334155;
-            /* Slate 700 */
         }
 
         h1,
         h2,
         h3,
         h4,
+        h5,
+        h6,
         .serif-font {
             font-family: 'Merriweather', serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         /* Medical/Academic Palette */
-        .text-primary {
-            color: #004d7a;
-        }
+        .text-primary { color: #004d7a; }
+        .bg-primary { background-color: #004d7a; }
+        .text-accent { color: #00bfa5; }
+        .bg-accent { background-color: #00bfa5; }
+        .text-alert { color: #c0392b; }
+        .bg-alert { background-color: #c0392b; }
+        .border-primary { border-color: #004d7a; }
 
-        /* Indisa/Medical Blue */
-        .bg-primary {
-            background-color: #004d7a;
-        }
-
-        .text-accent {
-            color: #00bfa5;
-        }
-
-        /* Teal/Surgical Green */
-        .bg-accent {
-            background-color: #00bfa5;
-        }
-
-        .text-alert {
-            color: #c0392b;
-        }
-
-        /* Clinical Alert */
-
-        /* Chart Container Rules */
+        /* Chart Container */
         .chart-container {
             position: relative;
             width: 100%;
             max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto;
             height: 350px;
             max-height: 400px;
         }
 
         @media (max-width: 640px) {
-            .chart-container {
-                height: 300px;
-            }
+            .chart-container { height: 300px; }
         }
 
-        /* Academic Card Styling - Clean Borders, Subtle Shadows */
+        /* Academic Card */
         .academic-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-top: 4px solid #004d7a;
-            /* Top accent */
             padding: 2rem;
         }
 
+        /* Stat Card Hover */
+        .stat-card {
+            transition: transform 0.2s ease;
+        }
+        .stat-card:hover {
+            transform: scale(1.03);
+        }
+
+        /* Section Badge */
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background-color: #004d7a;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up { animation: fadeInUp 0.6s ease-out both; }
+        .fade-in-up-delay-1 { animation: fadeInUp 0.6s ease-out 0.1s both; }
+        .fade-in-up-delay-2 { animation: fadeInUp 0.6s ease-out 0.2s both; }
+
         /* Print Optimization */
         @media print {
-
-            nav,
-            button,
-            footer {
-                display: none !important;
-            }
-
-            body {
-                background-color: white;
-            }
-
-            .shadow-lg,
-            .shadow-xl {
-                box-shadow: none !important;
-            }
-
-            .max-w-7xl {
-                max-width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-
-            header {
-                padding-top: 20px !important;
-                padding-bottom: 20px !important;
-            }
-
-            /* Force break pages if necessary */
-            section {
-                page-break-inside: avoid;
-                margin-bottom: 2rem;
-            }
+            nav, button, footer, .no-print, #contacto { display: none !important; }
+            body { background-color: white; }
+            .shadow-lg, .shadow-xl, .shadow-sm { box-shadow: none !important; }
+            section { page-break-inside: avoid; margin-bottom: 1.5rem; }
+            .academic-card { background: white; border: 2px solid #000; }
+            .bg-primary { background-color: #004d7a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
 </head>
 
 <body class="antialiased">
 
-    <!-- Sticky Nav (Hidden on Print) -->
-    <nav class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm no-print">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center gap-3">
-                    <!-- Simple Logo Placeholder -->
-                    <div
-                        class="w-8 h-8 bg-primary rounded-sm flex items-center justify-center text-white font-serif font-bold">
-                        H</div>
+                    <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="36" height="36" rx="8" fill="#004d7a" />
+                        <path d="M18 8v20M8 18h20" stroke="white" stroke-width="3" stroke-linecap="round" />
+                    </svg>
                     <div>
-                        <div class="font-serif font-bold text-2xl text-primary tracking-tight">Healthpixel</div>
-                        <div class="text-xs text-gray-500 uppercase tracking-widest">Medical Solutions</div>
+                        <div class="font-serif font-bold text-xl text-primary tracking-tight">Healthpixel</div>
+                        <div class="text-[10px] text-gray-500 uppercase tracking-widest">Coordinaci&oacute;n Quir&uacute;rgica Inteligente</div>
                     </div>
                 </div>
-                <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-600">
-                    <span class="px-3 py-1 bg-blue-50 text-primary rounded-full text-xs font-bold uppercase">Cliente:
-                        Clínica Indisa</span>
+                <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-500">
+                    <a href="#problema" class="hover:text-primary transition">Problema</a>
+                    <a href="#solucion" class="hover:text-primary transition">Soluci&oacute;n</a>
+                    <a href="#capacidades" class="hover:text-primary transition">Capacidades</a>
+                    <a href="#costos" class="hover:text-primary transition">Costos</a>
+                    <a href="#pricing" class="hover:text-primary transition">Pricing</a>
+                    <a href="#roi" class="hover:text-primary transition">ROI</a>
+                    <a href="#contacto" class="hover:text-primary transition">Contacto</a>
                 </div>
+                <span class="hidden lg:inline-block px-3 py-1 bg-blue-50 text-primary rounded-full text-xs font-bold uppercase">Cliente: Cl&iacute;nica Indisa</span>
             </div>
         </div>
     </nav>
 
-    <!-- Header Section -->
-    <header class="bg-slate-50 border-b border-gray-200 pt-16 pb-16 px-4">
+    <!-- ===== HEADER / HERO ===== -->
+    <header class="bg-gradient-to-b from-white to-slate-50 pt-16 pb-20 px-4">
         <div class="max-w-5xl mx-auto text-center">
-            <div
-                class="inline-block mb-4 px-4 py-1 border border-blue-200 bg-white rounded-full text-primary text-sm font-semibold tracking-wide uppercase">
-                Propuesta Técnica v2.0
+            <div class="inline-block mb-6 px-4 py-1.5 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold tracking-wide uppercase">
+                Propuesta Confidencial v2.0 &middot; Febrero 2026
             </div>
             <h1 class="text-4xl md:text-5xl font-black mb-6 text-gray-900 leading-tight">
-                Sistema de Orquestación Quirúrgica
+                Cada hora de pabell&oacute;n vac&iacute;o le cuesta a Indisa <span class="text-alert">$2.000.000</span>
             </h1>
-            <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto font-light leading-relaxed">
-                Implementación de Agentes Cognitivos (IA) para la optimización de flujos de coordinación médica en
-                <strong>Clínica Indisa</strong>.
+            <p class="text-xl text-gray-600 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
+                La coordinaci&oacute;n manual de 21 pabellones, 200 m&eacute;dicos y 147 bloques diarios genera p&eacute;rdidas evitables.
+                Healthpixel elimina la fricci&oacute;n con IA.
             </p>
 
-            <div class="grid grid-cols-3 gap-8 max-w-3xl mx-auto mt-12 border-t border-gray-200 pt-8">
-                <div class="text-center">
-                    <div class="text-3xl font-serif font-bold text-primary">92%</div>
-                    <div class="text-xs text-gray-500 uppercase mt-1">Eficiencia de Margen</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto border-t border-gray-200 pt-10">
+                <div class="stat-card fade-in-up">
+                    <div class="text-3xl font-serif font-bold text-primary">99.7%</div>
+                    <div class="text-xs text-gray-500 uppercase mt-1">Disponibilidad del Sistema</div>
                 </div>
-                <div class="text-center border-l border-r border-gray-200">
-                    <div class="text-3xl font-serif font-bold text-primary">$40 USD</div>
-                    <div class="text-xs text-gray-500 uppercase mt-1">OPEX IA Mensual</div>
+                <div class="stat-card fade-in-up-delay-1 md:border-l md:border-r md:border-gray-200">
+                    <div class="text-3xl font-serif font-bold text-primary">$32 USD</div>
+                    <div class="text-xs text-gray-500 uppercase mt-1">Costo IA Mensual</div>
                 </div>
-                <div class="text-center">
-                    <div class="text-3xl font-serif font-bold text-primary">0</div>
-                    <div class="text-xs text-gray-500 uppercase mt-1">Errores Críticos</div>
+                <div class="stat-card fade-in-up-delay-2">
+                    <div class="text-3xl font-serif font-bold text-primary">&lt; 3s</div>
+                    <div class="text-xs text-gray-500 uppercase mt-1">Tiempo de Respuesta</div>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-6 py-16 space-y-20">
+    <main class="space-y-0">
 
-        <!-- Architecture Section -->
-        <section id="tech">
-            <div class="mb-8 border-b border-gray-200 pb-4">
-                <h2 class="text-2xl font-bold text-gray-900">1. Arquitectura de Sistemas</h2>
-                <p class="text-gray-500 mt-2">Enfoque "Lean Architecture" priorizando estabilidad y costos.</p>
-            </div>
+        <!-- ===== 01. EL PROBLEMA ===== -->
+        <section id="problema" class="py-20 px-4 bg-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-10">
+                    <span class="section-badge">01</span>
+                    <h2 class="text-3xl font-bold text-gray-900">El Desaf&iacute;o de la Coordinaci&oacute;n Quir&uacute;rgica</h2>
+                </div>
 
-            <div class="academic-card shadow-sm">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Component 1 -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     <div>
-                        <h4 class="font-bold text-primary mb-2 text-lg">Motor Cognitivo</h4>
-                        <p class="text-sm font-semibold text-gray-900 mb-1">Claude Haiku 4.5</p>
-                        <p class="text-xs text-gray-500 leading-relaxed">Modelo de última generación. Input $1/MTok,
-                            Output $5/MTok. Baja latencia y alta precisión en terminología médica.</p>
-                    </div>
-                    <!-- Component 2 -->
-                    <div>
-                        <h4 class="font-bold text-primary mb-2 text-lg">Interfaz</h4>
-                        <p class="text-sm font-semibold text-gray-900 mb-1">WhatsApp (Baileys)</p>
-                        <p class="text-xs text-gray-500 leading-relaxed">Canal ubicuo para el staff médico. Cero
-                            fricción de adopción.</p>
-                    </div>
-                    <!-- Component 3 -->
-                    <div>
-                        <h4 class="font-bold text-primary mb-2 text-lg">Frontend</h4>
-                        <p class="text-sm font-semibold text-gray-900 mb-1">Nuxt.js + Vue 3</p>
-                        <p class="text-xs text-gray-500 leading-relaxed">Panel de control administrativo reactivo y
-                            ligero.</p>
-                    </div>
-                    <!-- Component 4 -->
-                    <div>
-                        <h4 class="font-bold text-primary mb-2 text-lg">Infraestructura</h4>
-                        <p class="text-sm font-semibold text-gray-900 mb-1">VPS Dedicado</p>
-                        <p class="text-xs text-gray-500 leading-relaxed">Aislamiento de datos y cumplimiento normativo
-                            local.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Data Story 1: AI Economics -->
-        <section id="costos" class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-                <div class="mb-6 border-b border-gray-200 pb-4">
-                    <h2 class="text-2xl font-bold text-gray-900">2. Análisis de Costos IA</h2>
-                </div>
-                <p class="text-gray-700 mb-6 leading-relaxed text-justify">
-                    El sistema utiliza Claude Haiku 4.5 con precios por token: $1/MTok input, $5/MTok output. Con
-                    200 médicos registrados (~30% activos/día), el costo operativo de IA se mantiene extremadamente
-                    bajo gracias a la eficiencia del modelo y un system prompt optimizado de ~2,800 tokens.
-                </p>
-
-                <table class="min-w-full text-sm text-left text-gray-600 mb-6 border border-gray-200">
-                    <thead class="bg-gray-50 text-gray-900 font-serif">
-                        <tr>
-                            <th class="px-4 py-2 border-b">Métrica</th>
-                            <th class="px-4 py-2 border-b">Proyección Mensual</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="px-4 py-2 border-b">Volumen Conversaciones</td>
-                            <td class="px-4 py-2 border-b font-medium">4,200 / mes</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 border-b">Input Tokens (Contexto)</td>
-                            <td class="px-4 py-2 border-b">32 Millones</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 border-b">Output Tokens (Respuestas)</td>
-                            <td class="px-4 py-2 border-b">1.6 Millones</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 border-b">Costo Input ($1/MTok)</td>
-                            <td class="px-4 py-2 border-b">$32.00 USD</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 border-b">Costo Output ($5/MTok)</td>
-                            <td class="px-4 py-2 border-b">$8.00 USD</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 font-bold text-primary">Costo IA Mensual</td>
-                            <td class="px-4 py-2 font-bold text-primary">$40.00 USD</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="academic-card flex flex-col items-center justify-center bg-gray-50">
-                <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-6">Distribución de Recursos
-                    (USD)</h3>
-                <div class="chart-container" style="height: 300px;">
-                    <canvas id="aiCostChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <!-- Data Story 2: Scalability -->
-        <section>
-            <div class="mb-8 border-b border-gray-200 pb-4">
-                <h2 class="text-2xl font-bold text-gray-900">3. Proyección de Escalabilidad</h2>
-            </div>
-            <p class="text-gray-700 mb-8 max-w-3xl">
-                Análisis comparativo del crecimiento de costos operativos frente al aumento de la planta médica. La
-                curva demuestra una elasticidad de costos casi plana, ideal para la expansión de servicios de la
-                Clínica.
-            </p>
-
-            <div class="academic-card">
-                <div class="chart-container" style="max-width: 1000px; height: 380px;">
-                    <canvas id="scalabilityChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <!-- Pricing Section -->
-        <section id="pricing">
-            <div class="mb-10 text-center">
-                <h2 class="text-2xl font-bold text-gray-900">4. Propuesta Económica</h2>
-                <p class="text-gray-500 mt-2">Opciones de implementación para Clínica Indisa</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Option A -->
-                <div class="border border-gray-200 bg-white p-6">
-                    <h3 class="font-serif text-lg font-bold text-gray-900">Modelo SaaS</h3>
-                    <p class="text-xs text-gray-500 uppercase mb-4">Licenciamiento Individual</p>
-                    <div class="text-3xl font-serif text-primary mb-1">$5.000 <span
-                            class="text-sm text-gray-400 font-sans">CLP</span></div>
-                    <div class="text-xs text-gray-500 mb-6">por médico / mes</div>
-                    <ul class="text-sm space-y-2 text-gray-600 list-disc list-inside">
-                        <li>Facturación variable</li>
-                        <li>Gestión por usuario</li>
-                    </ul>
-                </div>
-
-                <!-- Option C (Hero) -->
-                <div class="border-2 border-primary bg-slate-50 p-6 relative">
-                    <div class="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-2 py-1 uppercase">
-                        Recomendado</div>
-                    <h3 class="font-serif text-lg font-bold text-primary">Modelo Híbrido</h3>
-                    <p class="text-xs text-gray-500 uppercase mb-4">Setup + Mantenimiento</p>
-
-                    <div class="flex justify-between items-end mb-2 border-b border-gray-200 pb-2">
-                        <span class="text-sm text-gray-600">Implementación</span>
-                        <span class="font-bold text-gray-900">$3.0M CLP</span>
-                    </div>
-                    <div class="flex justify-between items-end mb-6">
-                        <span class="text-sm text-gray-600">Mensualidad</span>
-                        <span class="font-bold text-xl text-primary">$800.000 CLP</span>
-                    </div>
-
-                    <p class="text-xs text-gray-600 mb-4 italic">Incluye 200 médicos, WhatsApp + Dashboard web, agente
-                        IA, agendas visuales, broadcasts, soporte técnico y actualizaciones.</p>
-                </div>
-
-                <!-- Option B -->
-                <div class="border border-gray-200 bg-white p-6">
-                    <h3 class="font-serif text-lg font-bold text-gray-900">Enterprise</h3>
-                    <p class="text-xs text-gray-500 uppercase mb-4">Tarifa Plana Institucional</p>
-                    <div class="text-3xl font-serif text-gray-700 mb-1">$900k <span
-                            class="text-sm text-gray-400 font-sans">CLP</span></div>
-                    <div class="text-xs text-gray-500 mb-6">mensual fijo</div>
-                    <ul class="text-sm space-y-2 text-gray-600 list-disc list-inside">
-                        <li>Hasta 200 usuarios</li>
-                        <li>Previsibilidad total</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- ROI Analysis -->
-        <section id="roi" class="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-16 border-t border-gray-200 pt-16">
-            <div class="flex flex-col justify-center">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">5. Retorno de Inversión (ROI)</h2>
-                <div class="space-y-6">
-                    <div class="bg-blue-50 border-l-4 border-primary p-4">
-                        <h4 class="font-bold text-primary text-sm uppercase mb-1">El Costo de Oportunidad</h4>
-                        <p class="text-sm text-gray-700 text-justify">
-                            Datos internos sugieren que un pabellón inactivo por errores de coordinación representa una
-                            pérdida de hasta <strong>$2.000.000 CLP por hora</strong>.
+                        <p class="text-lg text-gray-600 leading-relaxed">
+                            La gesti&oacute;n manual de pabellones quir&uacute;rgicos enfrenta desaf&iacute;os cr&iacute;ticos que impactan directamente
+                            la operaci&oacute;n y rentabilidad de la cl&iacute;nica. Cada punto de fricci&oacute;n se traduce en horas perdidas,
+                            conflictos evitables y costos de oportunidad silenciosos.
                         </p>
                     </div>
-                    <p class="text-sm text-gray-600 leading-relaxed text-justify">
-                        La implementación de Healthpixel ofrece una cobertura de riesgo completa por un costo mensual
-                        inferior al salario de un técnico administrativo, con disponibilidad 24/7 y tiempos de respuesta
-                        inmediatos.
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="academic-card">
+                            <div class="text-2xl mb-2">&#x1F3E5;</div>
+                            <h4 class="font-bold text-gray-900 mb-1">Pabellones Ociosos</h4>
+                            <p class="text-xs text-gray-500">Errores de coordinaci&oacute;n dejan quir&oacute;fanos sin uso durante horas operativas cr&iacute;ticas.</p>
+                        </div>
+                        <div class="academic-card">
+                            <div class="text-2xl mb-2">&#x23F0;</div>
+                            <h4 class="font-bold text-gray-900 mb-1">Sobrecarga Administrativa</h4>
+                            <p class="text-xs text-gray-500">40+ horas semanales del equipo dedicadas a coordinaci&oacute;n telef&oacute;nica y WhatsApp manual.</p>
+                        </div>
+                        <div class="academic-card">
+                            <div class="text-2xl mb-2">&#x26A0;&#xFE0F;</div>
+                            <h4 class="font-bold text-gray-900 mb-1">Errores de Comunicaci&oacute;n</h4>
+                            <p class="text-xs text-gray-500">Doble-booking, horarios cruzados y falta de visibilidad en tiempo real.</p>
+                        </div>
+                        <div class="academic-card">
+                            <div class="text-2xl mb-2">&#x1F50D;</div>
+                            <h4 class="font-bold text-gray-900 mb-1">Sin Trazabilidad</h4>
+                            <p class="text-xs text-gray-500">Ausencia de registro auditable de qui&eacute;n reserv&oacute; qu&eacute;, cu&aacute;ndo y por qu&eacute;.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 p-6 bg-red-50 border-l-4 border-red-500 rounded-r">
+                    <p class="text-gray-800">
+                        <strong class="text-alert">Un solo pabell&oacute;n inactivo por error de coordinaci&oacute;n</strong> puede significar
+                        hasta $2.000.000 CLP/hora en costos de oportunidad &mdash; equivalente a <strong>$16.000.000 en un turno completo</strong>.
                     </p>
                 </div>
             </div>
+        </section>
 
-            <div class="academic-card">
-                <h3 class="text-sm font-bold text-gray-500 text-center mb-4">Comparativa de Costos Operativos Mensuales
-                </h3>
-                <div class="chart-container">
-                    <canvas id="roiChart"></canvas>
+        <!-- ===== 02. LA SOLUCION ===== -->
+        <section id="solucion" class="py-20 px-4 bg-slate-50">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="section-badge">02</span>
+                    <h2 class="text-3xl font-bold text-gray-900">Healthpixel: Coordinaci&oacute;n Quir&uacute;rgica Inteligente</h2>
+                </div>
+                <p class="text-lg text-gray-600 mb-10 ml-16">Un asistente de IA disponible 24/7 que los doctores ya saben usar &mdash; porque funciona por WhatsApp.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="academic-card">
+                        <h4 class="font-bold text-primary mb-2 text-lg">Motor Cognitivo</h4>
+                        <p class="text-sm font-semibold text-gray-900 mb-1">Claude Haiku (Anthropic)</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">Modelo optimizado para lenguaje m&eacute;dico. Input $0,80/MTok, Output $4,00/MTok. Respuestas en menos de 3 segundos.</p>
+                    </div>
+                    <div class="academic-card">
+                        <h4 class="font-bold text-primary mb-2 text-lg">Canal de Comunicaci&oacute;n</h4>
+                        <p class="text-sm font-semibold text-gray-900 mb-1">WhatsApp Web.js</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">El canal que los doctores ya usan. Sin apps nuevas, sin curva de aprendizaje. Adopci&oacute;n inmediata.</p>
+                    </div>
+                    <div class="academic-card">
+                        <h4 class="font-bold text-primary mb-2 text-lg">Panel Administrativo</h4>
+                        <p class="text-sm font-semibold text-gray-900 mb-1">Nuxt 4 + Vue 3</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">Dashboard web para supervisores y coordinadores. Agendas en tiempo real.</p>
+                    </div>
+                    <div class="academic-card">
+                        <h4 class="font-bold text-primary mb-2 text-lg">Infraestructura</h4>
+                        <p class="text-sm font-semibold text-gray-900 mb-1">VPS Dedicado (Chile)</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">Datos alojados en territorio nacional. Aislamiento completo y control de acceso.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Signature/Footer Area -->
-        <div class="mt-20 pt-10 border-t-2 border-gray-800 flex justify-between items-end">
-            <div>
-                <div class="font-serif font-bold text-2xl text-gray-900">Healthpixel</div>
-                <div class="text-sm text-gray-500">Medical Technology Solutions</div>
+        <!-- ===== 03. CAPACIDADES ===== -->
+        <section id="capacidades" class="py-20 px-4 bg-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="section-badge">03</span>
+                    <h2 class="text-3xl font-bold text-gray-900">9 Herramientas de IA para el Doctor</h2>
+                </div>
+                <p class="text-lg text-gray-600 mb-10 ml-16">El agente comprende lenguaje natural y ejecuta acciones reales sobre el sistema de pabellones.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+                    <div class="academic-card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-lg">&#x1F4C5;</div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Consultar Fecha</p>
+                                <p class="text-xs text-gray-500">Obtiene fecha actual y pr&oacute;xima semana para contexto temporal.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="academic-card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 text-lg">&#x2705;</div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Ver Disponibilidad</p>
+                                <p class="text-xs text-gray-500">Consulta disponibilidad por fecha, pabell&oacute;n o rango.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="academic-card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 text-lg">&#x1F50D;</div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Buscar Slots</p>
+                                <p class="text-xs text-gray-500">Encuentra bloques libres en un rango de fechas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="academic-card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 text-lg">&#x1F517;</div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Bloques Consecutivos</p>
+                                <p class="text-xs text-gray-500">Busca N bloques seguidos para cirug&iacute;as largas (hasta 14 horas).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="academic-card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 text-lg">&#x2795;</div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Crear Reservaci&oacute;n</p>
+                                <p class="text-xs text-gray-500">Agenda una cirug&iacute;a con validaci&oacute;n completa de datos del paciente.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="academic-card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0 text-lg">&#x1F4CB;</div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Listar Reservaciones</p>
+                                <p class="text-xs text-gray-500">Consulta reservaciones por doctor, fecha o pabell&oacute;n.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="academic-card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 text-lg">&#x274C;</div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Cancelar Reservaci&oacute;n</p>
+                                <p class="text-xs text-gray-500">Cancela con verificaci&oacute;n de permisos y trazabilidad.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="academic-card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 text-lg">&#x1F4CA;</div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Agenda Diaria Visual</p>
+                                <p class="text-xs text-gray-500">Genera imagen de la agenda del d&iacute;a para enviar por WhatsApp.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="academic-card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center flex-shrink-0 text-lg">&#x1F4C8;</div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Agenda Semanal Visual</p>
+                                <p class="text-xs text-gray-500">Genera vista semanal completa de ocupaci&oacute;n de pabellones.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manager Agent -->
+                <div class="bg-slate-50 border-l-4 border-primary p-8 rounded-r">
+                    <h3 class="text-xl font-bold text-primary mb-2">Agente de Gesti&oacute;n (Manager)</h3>
+                    <p class="text-gray-600 mb-6">Adem&aacute;s del agente para doctores, el sistema incluye un agente de supervisi&oacute;n con herramientas adicionales:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded border border-gray-200">
+                            <h4 class="font-bold text-gray-800 text-sm mb-1">Broadcast Masivo</h4>
+                            <p class="text-xs text-gray-500">Env&iacute;a mensajes a m&uacute;ltiples doctores con confirmaci&oacute;n y retry autom&aacute;tico.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded border border-gray-200">
+                            <h4 class="font-bold text-gray-800 text-sm mb-1">Estad&iacute;sticas de Ocupaci&oacute;n</h4>
+                            <p class="text-xs text-gray-500">M&eacute;tricas en tiempo real de uso de pabellones, tendencias y proyecciones.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded border border-gray-200">
+                            <h4 class="font-bold text-gray-800 text-sm mb-1">Agenda por Doctor</h4>
+                            <p class="text-xs text-gray-500">Visualizaci&oacute;n del calendario quir&uacute;rgico de cada profesional.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="text-right text-sm text-gray-500">
-                <p>Documento generado para <strong>Clínica Indisa</strong></p>
-                <p>Febrero 2026</p>
+        </section>
+
+        <!-- ===== 04. IMPACTO (ANTES vs DESPUES) ===== -->
+        <section id="impacto" class="py-20 px-4 bg-slate-50">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-10">
+                    <span class="section-badge">04</span>
+                    <h2 class="text-3xl font-bold text-gray-900">Impacto Operativo Proyectado</h2>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm border-collapse">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-left py-4 px-6 font-bold text-gray-700 bg-gray-100 w-1/3"></th>
+                                <th scope="col" class="text-left py-4 px-6 font-bold text-red-800 bg-red-50 w-1/3">HOY (Proceso Manual)</th>
+                                <th scope="col" class="text-left py-4 px-6 font-bold text-white bg-primary w-1/3">CON HEALTHPIXEL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-6 font-semibold text-gray-800">Coordinaci&oacute;n</td>
+                                <td class="py-3 px-6 text-gray-700 bg-red-50/50">Llamadas, WhatsApp manual, email</td>
+                                <td class="py-3 px-6 text-gray-700 bg-blue-50/50">Agente IA 24/7 por WhatsApp</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-6 font-semibold text-gray-800">Horas Admin/Semana</td>
+                                <td class="py-3 px-6 text-gray-700 bg-red-50/50 font-bold text-alert">40+</td>
+                                <td class="py-3 px-6 text-gray-700 bg-blue-50/50 font-bold text-primary">&lt; 6</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-6 font-semibold text-gray-800">Visibilidad</td>
+                                <td class="py-3 px-6 text-gray-700 bg-red-50/50">Planillas Excel, pizarras</td>
+                                <td class="py-3 px-6 text-gray-700 bg-blue-50/50">Dashboard tiempo real + agendas visuales</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-6 font-semibold text-gray-800">Ocupaci&oacute;n Pabellones</td>
+                                <td class="py-3 px-6 text-gray-700 bg-red-50/50">~72%</td>
+                                <td class="py-3 px-6 text-gray-700 bg-blue-50/50">Proyecci&oacute;n: &gt; 90%</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-6 font-semibold text-gray-800">Errores Coordinaci&oacute;n/Mes</td>
+                                <td class="py-3 px-6 text-gray-700 bg-red-50/50">~23 incidentes</td>
+                                <td class="py-3 px-6 text-gray-700 bg-blue-50/50">Reducci&oacute;n &gt; 95%</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-6 font-semibold text-gray-800">Trazabilidad</td>
+                                <td class="py-3 px-6 text-gray-700 bg-red-50/50">Ninguna formal</td>
+                                <td class="py-3 px-6 text-gray-700 bg-blue-50/50">Audit trail encriptado completo</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-6 font-semibold text-gray-800">Tiempo de Respuesta</td>
+                                <td class="py-3 px-6 text-gray-700 bg-red-50/50">Minutos a horas</td>
+                                <td class="py-3 px-6 text-gray-700 bg-blue-50/50">&lt; 3 segundos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- ===== 05. COSTOS IA ===== -->
+        <section id="costos" class="py-20 px-4 bg-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-10">
+                    <span class="section-badge">05</span>
+                    <h2 class="text-3xl font-bold text-gray-900">Econom&iacute;a del Motor de IA</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                    <div>
+                        <p class="text-gray-700 mb-6 leading-relaxed">
+                            El sistema utiliza Claude Haiku de Anthropic, optimizado para terminolog&iacute;a m&eacute;dica.
+                            Con 200 m&eacute;dicos registrados (~30% activos por d&iacute;a), el costo de IA es marginal
+                            gracias a la eficiencia del modelo.
+                        </p>
+
+                        <table class="w-full text-sm border border-gray-200 mb-4">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-4 py-2 border-b text-left font-semibold text-gray-900">M&eacute;trica</th>
+                                    <th scope="col" class="px-4 py-2 border-b text-right font-semibold text-gray-900">Proyecci&oacute;n Mensual</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="px-4 py-2 border-b text-gray-700">Volumen Conversaciones</td>
+                                    <td class="px-4 py-2 border-b text-right font-medium">4.200 / mes</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="px-4 py-2 border-b text-gray-700">Tokens de Entrada (Contexto)</td>
+                                    <td class="px-4 py-2 border-b text-right">32 Millones</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 border-b text-gray-700">Tokens de Salida (Respuestas)</td>
+                                    <td class="px-4 py-2 border-b text-right">1,6 Millones</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="px-4 py-2 border-b text-gray-700">Costo Entrada ($0,80/MTok)</td>
+                                    <td class="px-4 py-2 border-b text-right">$25,60 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 border-b text-gray-700">Costo Salida ($4,00/MTok)</td>
+                                    <td class="px-4 py-2 border-b text-right">$6,40 USD</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 font-bold text-primary">Costo IA Total</td>
+                                    <td class="px-4 py-2 text-right font-bold text-primary">$32,00 USD</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="text-xs text-gray-400">* Precios de Anthropic API vigentes a febrero 2026. Modelo: Claude Haiku.</p>
+                    </div>
+
+                    <div class="academic-card bg-gray-50">
+                        <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-6 text-center">Distribuci&oacute;n de Costos Operativos (USD/mes)</h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="aiCostChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 06. ESCALABILIDAD ===== -->
+        <section id="escalabilidad" class="py-20 px-4 bg-slate-50">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-10">
+                    <span class="section-badge">06</span>
+                    <h2 class="text-3xl font-bold text-gray-900">Proyecci&oacute;n de Escalabilidad</h2>
+                </div>
+                <p class="text-gray-700 mb-8 max-w-3xl">
+                    El costo de IA crece de forma sublineal respecto al n&uacute;mero de usuarios. Duplicar la planta m&eacute;dica no duplica los costos operativos.
+                </p>
+                <div class="academic-card">
+                    <div class="chart-container" style="max-width: 1000px; height: 380px;">
+                        <canvas id="scalabilityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 07. PRICING ===== -->
+        <section id="pricing" class="py-20 px-4 bg-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="section-badge">07</span>
+                    <h2 class="text-3xl font-bold text-gray-900">Propuesta Econ&oacute;mica</h2>
+                </div>
+                <p class="text-lg text-gray-600 mb-10 ml-16">Modelo de implementaci&oacute;n para Cl&iacute;nica Indisa</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Option 1: Recommended -->
+                    <div class="academic-card border-2 border-primary relative">
+                        <div class="absolute -top-3 right-4 bg-primary text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Recomendado</div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-1">Modelo Integral</h3>
+                        <p class="text-xs text-gray-500 uppercase mb-6">Implementaci&oacute;n + Servicio Mensual</p>
+
+                        <div class="mb-6 pb-6 border-b border-gray-200">
+                            <div class="mb-4">
+                                <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Setup (una vez)</p>
+                                <p class="text-2xl font-bold text-primary">$3.000.000 <span class="text-sm text-gray-400 font-normal">CLP</span></p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Mensualidad</p>
+                                <p class="text-2xl font-bold text-primary">$800.000 <span class="text-sm text-gray-400 font-normal">CLP / mes</span></p>
+                            </div>
+                        </div>
+
+                        <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Incluye:</p>
+                        <ul class="text-sm text-gray-600 space-y-1.5">
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>Hasta 200 m&eacute;dicos</li>
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>WhatsApp + Dashboard web</li>
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>Agente IA con 9 herramientas</li>
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>Agente manager + broadcasts</li>
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>Agendas visuales (diaria + semanal)</li>
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>Encriptaci&oacute;n PHI + audit trail</li>
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>Soporte t&eacute;cnico + actualizaciones</li>
+                        </ul>
+                    </div>
+
+                    <!-- Option 2: Enterprise -->
+                    <div class="academic-card">
+                        <h3 class="text-xl font-bold text-gray-900 mb-1">Enterprise Premium</h3>
+                        <p class="text-xs text-gray-500 uppercase mb-6">Todo Incluido, Tarifa Plana</p>
+
+                        <div class="mb-6 pb-6 border-b border-gray-200">
+                            <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Mensualidad (sin costo setup)</p>
+                            <p class="text-2xl font-bold text-primary">$1.200.000 <span class="text-sm text-gray-400 font-normal">CLP / mes</span></p>
+                        </div>
+
+                        <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Todo lo anterior, m&aacute;s:</p>
+                        <ul class="text-sm text-gray-600 space-y-1.5">
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>SLA 99.8% uptime garantizado</li>
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>Soporte prioritario 24/7</li>
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>Backup diario dedicado</li>
+                            <li class="flex items-start gap-2"><span class="text-accent font-bold">&#x2022;</span>Reportes mensuales ejecutivos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-10 p-6 bg-blue-50 border border-blue-200 rounded">
+                    <p class="text-sm text-gray-700">
+                        <strong class="text-primary">Ambas opciones incluyen:</strong> hosting en Chile, encriptaci&oacute;n AES-256 de datos sensibles,
+                        cumplimiento normativo local, y actualizaciones de modelo IA sin costo adicional.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 08. ROI ===== -->
+        <section id="roi" class="py-20 px-4 bg-slate-50">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-10">
+                    <span class="section-badge">08</span>
+                    <h2 class="text-3xl font-bold text-gray-900">Retorno de Inversi&oacute;n</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div class="flex flex-col justify-center">
+                        <div class="bg-blue-50 border-l-4 border-primary p-6 rounded-r mb-6">
+                            <p class="text-gray-800 font-semibold">
+                                Un pabell&oacute;n inactivo por errores de coordinaci&oacute;n genera p&eacute;rdidas de hasta
+                                <strong>$2.000.000 CLP/hora</strong> en costos de oportunidad.
+                            </p>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Healthpixel cubre el riesgo de coordinaci&oacute;n completo por menos que el costo de un cargo
+                            administrativo adicional, con disponibilidad 24/7 y respuesta inmediata.
+                        </p>
+                        <p class="text-xs text-gray-400">* Comparativa basada en costos mensuales equivalentes. Fuente: an&aacute;lisis interno.</p>
+                    </div>
+
+                    <div class="academic-card">
+                        <h3 class="text-sm font-bold text-gray-500 text-center mb-4 uppercase tracking-widest">Comparativa de Costos Mensuales (CLP)</h3>
+                        <div class="chart-container">
+                            <canvas id="roiChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 09. SEGURIDAD ===== -->
+        <section id="seguridad" class="py-20 px-4 bg-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-10">
+                    <span class="section-badge">09</span>
+                    <h2 class="text-3xl font-bold text-gray-900">Seguridad y Protecci&oacute;n de Datos</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="academic-card">
+                        <h4 class="font-bold text-gray-900 mb-2">Encriptaci&oacute;n PHI</h4>
+                        <p class="text-sm text-gray-600">Datos sensibles (RUT, tel&eacute;fono, diagn&oacute;stico) cifrados con AES-256-GCM. Llaves rotadas peri&oacute;dicamente.</p>
+                    </div>
+                    <div class="academic-card">
+                        <h4 class="font-bold text-gray-900 mb-2">Audit Trail Completo</h4>
+                        <p class="text-sm text-gray-600">Cada acci&oacute;n del sistema queda registrada: qui&eacute;n, qu&eacute;, cu&aacute;ndo. Registros inmutables para auditor&iacute;a.</p>
+                    </div>
+                    <div class="academic-card">
+                        <h4 class="font-bold text-gray-900 mb-2">Autenticaci&oacute;n por Roles</h4>
+                        <p class="text-sm text-gray-600">4 niveles de acceso (Admin, Manager, Doctor, General) con API keys independientes y comparaci&oacute;n timing-safe.</p>
+                    </div>
+                    <div class="academic-card">
+                        <h4 class="font-bold text-gray-900 mb-2">Datos en Chile</h4>
+                        <p class="text-sm text-gray-600">Servidor dedicado en territorio nacional. Sin transferencia internacional de datos cl&iacute;nicos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 10. TIMELINE ===== -->
+        <section id="timeline" class="py-20 px-4 bg-slate-50">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-10">
+                    <span class="section-badge">10</span>
+                    <h2 class="text-3xl font-bold text-gray-900">Plan de Implementaci&oacute;n</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+                    <!-- Connection line (desktop) -->
+                    <div class="hidden md:block absolute top-8 left-8 right-8 h-0.5 bg-gray-300" style="z-index: 0;"></div>
+
+                    <div class="text-center relative" style="z-index: 1;">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-lg font-bold shadow-lg">1</div>
+                        <h4 class="font-bold text-gray-900 mb-1">Semana 1-2</h4>
+                        <p class="text-primary font-semibold text-sm mb-2">Setup</p>
+                        <p class="text-xs text-gray-500">Configuraci&oacute;n de infraestructura, integraci&oacute;n WhatsApp, carga de datos de m&eacute;dicos.</p>
+                    </div>
+                    <div class="text-center relative" style="z-index: 1;">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-lg font-bold shadow-lg">2</div>
+                        <h4 class="font-bold text-gray-900 mb-1">Semana 3</h4>
+                        <p class="text-primary font-semibold text-sm mb-2">Piloto</p>
+                        <p class="text-xs text-gray-500">5-10 doctores en prueba controlada. Validaci&oacute;n de flujos y ajustes.</p>
+                    </div>
+                    <div class="text-center relative" style="z-index: 1;">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-lg font-bold shadow-lg">3</div>
+                        <h4 class="font-bold text-gray-900 mb-1">Semana 4</h4>
+                        <p class="text-primary font-semibold text-sm mb-2">Expansi&oacute;n</p>
+                        <p class="text-xs text-gray-500">Rollout gradual: 20 &rarr; 50 &rarr; 100 m&eacute;dicos. Capacitaci&oacute;n por grupos.</p>
+                    </div>
+                    <div class="text-center relative" style="z-index: 1;">
+                        <div class="w-16 h-16 bg-accent text-white rounded-full flex items-center justify-center mx-auto mb-4 text-lg font-bold shadow-lg">&#x2713;</div>
+                        <h4 class="font-bold text-gray-900 mb-1">Semana 5+</h4>
+                        <p class="text-accent font-semibold text-sm mb-2">Operaci&oacute;n</p>
+                        <p class="text-xs text-gray-500">200 m&eacute;dicos activos. Monitoreo continuo, optimizaciones y soporte.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 11. FAQ ===== -->
+        <section id="faq" class="py-20 px-4 bg-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-10">
+                    <span class="section-badge">11</span>
+                    <h2 class="text-3xl font-bold text-gray-900">Preguntas Frecuentes</h2>
+                </div>
+
+                <div class="space-y-4 max-w-4xl">
+                    <div class="academic-card">
+                        <h4 class="font-bold text-gray-900 mb-2">&iquest;Qu&eacute; pasa si la IA comete un error?</h4>
+                        <p class="text-sm text-gray-600">Healthpixel opera como asistente, no como decisor. Todas las reservaciones requieren datos completos validados por esquemas Zod. El sistema no puede crear reservaciones con datos incompletos o inv&aacute;lidos.</p>
+                    </div>
+                    <div class="academic-card">
+                        <h4 class="font-bold text-gray-900 mb-2">&iquest;Es seguro usar WhatsApp para datos m&eacute;dicos?</h4>
+                        <p class="text-sm text-gray-600">Los datos sensibles del paciente (RUT, tel&eacute;fono) se encriptan con AES-256 antes de almacenarse. WhatsApp se usa como canal de comunicaci&oacute;n; los datos cl&iacute;nicos se procesan y almacenan en el servidor dedicado.</p>
+                    </div>
+                    <div class="academic-card">
+                        <h4 class="font-bold text-gray-900 mb-2">&iquest;Qu&eacute; sucede si el sistema se cae?</h4>
+                        <p class="text-sm text-gray-600">El sistema incluye monitoreo autom&aacute;tico, reconexi&oacute;n de WhatsApp con retry exponencial, y almacenamiento at&oacute;mico con file locking que previene corrupci&oacute;n de datos. SLA de disponibilidad incluido en contrato.</p>
+                    </div>
+                    <div class="academic-card">
+                        <h4 class="font-bold text-gray-900 mb-2">&iquest;Se puede integrar con nuestro sistema actual?</h4>
+                        <p class="text-sm text-gray-600">El sistema opera de forma independiente y no requiere integraci&oacute;n con ERP existente. Los doctores interact&uacute;an v&iacute;a WhatsApp y los coordinadores v&iacute;a el dashboard web.</p>
+                    </div>
+                    <div class="academic-card">
+                        <h4 class="font-bold text-gray-900 mb-2">&iquest;C&oacute;mo se capacita al personal?</h4>
+                        <p class="text-sm text-gray-600">La capacitaci&oacute;n es m&iacute;nima: los doctores hablan con el agente por WhatsApp como lo har&iacute;an con una persona. Para coordinadores, incluimos sesi&oacute;n de 2 horas sobre el dashboard.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </main>
 
-    <script>
-        // --- UTILITY: Label Wrapping Helper ---
-        function formatLabel(str, maxwidth) {
-            if (typeof str !== 'string' || str.length <= maxwidth) return str;
-            var sections = [];
-            var words = str.split(" ");
-            var temp = "";
-            words.forEach(function (item, index) {
-                if (temp.length > 0) {
-                    var concat = temp + ' ' + item;
-                    if (concat.length > maxwidth) {
-                        sections.push(temp);
-                        temp = item;
-                    } else {
-                        temp = concat;
-                    }
-                } else {
-                    temp = item;
-                }
-            });
-            if (temp.length > 0) {
-                sections.push(temp);
-            }
-            return sections;
-        }
+    <!-- ===== CTA ===== -->
+    <section id="contacto" class="py-16 px-4 bg-primary text-white no-print">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">&iquest;Listos para optimizar sus pabellones?</h2>
+            <p class="text-lg mb-8 opacity-90">Agende una demostraci&oacute;n en vivo de 30 minutos.</p>
 
-        // --- ACADEMIC CHART CONFIG ---
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+                <a href="mailto:contacto@healthpixel.cl"
+                    class="px-8 py-3 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition text-center">
+                    Agendar Demostraci&oacute;n
+                </a>
+                <a href="#"
+                    class="px-8 py-3 border-2 border-white text-white font-bold rounded-lg hover:bg-white/10 transition text-center">
+                    Descargar Propuesta PDF
+                </a>
+            </div>
+
+            <p class="text-sm opacity-75">contacto@healthpixel.cl &middot; +56 9 XXXX XXXX</p>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="py-12 px-4 border-t-2 border-gray-800">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+                <div>
+                    <div class="font-serif font-bold text-2xl text-gray-900">Healthpixel</div>
+                    <div class="text-sm text-gray-500">Coordinaci&oacute;n Quir&uacute;rgica Inteligente</div>
+                </div>
+                <div class="text-right text-sm text-gray-500">
+                    <p>Documento confidencial generado para <strong>Cl&iacute;nica Indisa</strong></p>
+                    <p>Febrero 2026</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 pt-6">
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Este documento contiene informaci&oacute;n confidencial destinada exclusivamente a Cl&iacute;nica Indisa.
+                    Su reproducci&oacute;n o distribuci&oacute;n sin autorizaci&oacute;n escrita est&aacute; prohibida.
+                    Las proyecciones presentadas son estimaciones basadas en modelos internos y pueden variar seg&uacute;n condiciones de implementaci&oacute;n.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== CHARTS ===== -->
+    <script>
+        // --- Chart.js Defaults ---
         Chart.defaults.font.family = "'Lato', sans-serif";
-        Chart.defaults.color = '#475569'; // Slate 600
-        Chart.defaults.scale.grid.color = '#f1f5f9'; // Slate 100
+        Chart.defaults.color = '#475569';
+        Chart.defaults.scale.grid.color = '#f1f5f9';
 
         const tooltipConfig = {
-            callbacks: {
-                title: function (tooltipItems) {
-                    const item = tooltipItems[0];
-                    let label = item.chart.data.labels[item.dataIndex];
-                    if (Array.isArray(label)) {
-                        return label.join(' ');
-                    } else {
-                        return label;
-                    }
-                }
-            },
             backgroundColor: '#1e293b',
-            titleFont: { family: "'Merriweather', serif" },
+            titleFont: { family: "'Merriweather', serif", size: 13 },
+            bodyFont: { size: 12 },
             padding: 12,
-            cornerRadius: 4
+            cornerRadius: 4,
+            callbacks: {
+                title: function(items) {
+                    const label = items[0].chart.data.labels[items[0].dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : label;
+                }
+            }
         };
 
-        // --- CHART 1: AI Cost Breakdown (Donut) ---
-        // Colors: Clinical Blue, Teal, Slate
-        const ctxAI = document.getElementById('aiCostChart').getContext('2d');
-        new Chart(ctxAI, {
+        function formatLabel(str, maxwidth) {
+            if (typeof str !== 'string' || str.length <= maxwidth) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let current = '';
+            words.forEach(word => {
+                if (current && (current + ' ' + word).length > maxwidth) {
+                    lines.push(current);
+                    current = word;
+                } else {
+                    current = current ? current + ' ' + word : word;
+                }
+            });
+            if (current) lines.push(current);
+            return lines;
+        }
+
+        // --- CHART 1: AI Cost Doughnut ---
+        new Chart(document.getElementById('aiCostChart'), {
             type: 'doughnut',
             data: {
-                labels: ['Input Tokens (Contexto)', 'Output Tokens (Respuestas)', 'Hosting/Infra'],
+                labels: ['Tokens Entrada ($25,60)', 'Tokens Salida ($6,40)', 'Hosting/Infra ($25,00)'],
                 datasets: [{
-                    data: [32.00, 8.00, 25.00],
-                    backgroundColor: [
-                        '#004d7a', // Primary Blue
-                        '#00bfa5', // Teal Accent
-                        '#94a3b8'  // Slate Gray
-                    ],
-                    borderWidth: 1,
+                    data: [25.60, 6.40, 25.00],
+                    backgroundColor: ['#004d7a', '#00bfa5', '#94a3b8'],
+                    borderWidth: 2,
                     borderColor: '#ffffff',
                     hoverOffset: 4
                 }]
@@ -459,45 +823,50 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                cutout: '55%',
                 plugins: {
                     legend: {
-                        position: 'right',
-                        labels: { boxWidth: 12, usePointStyle: true, font: { size: 11 } }
+                        position: 'bottom',
+                        labels: { boxWidth: 12, usePointStyle: true, font: { size: 11 }, padding: 16 }
                     },
-                    tooltip: tooltipConfig,
-                },
-                cutout: '75%'
+                    tooltip: {
+                        ...tooltipConfig,
+                        callbacks: {
+                            ...tooltipConfig.callbacks,
+                            label: ctx => ctx.label + ': $' + ctx.parsed.toFixed(2) + ' USD/mes'
+                        }
+                    }
+                }
             }
         });
 
-        // --- CHART 2: Scalability (Line/Bar) ---
-        const scenarioLabels = ['Bajo (30 docs)', 'Medio (60 docs)', 'Alto (120 docs)', 'Pico (200 docs)'];
-        const processedScenarioLabels = scenarioLabels.map(l => formatLabel(l, 16));
-
-        const ctxScale = document.getElementById('scalabilityChart').getContext('2d');
-        new Chart(ctxScale, {
+        // --- CHART 2: Scalability ---
+        const scaleLabels = ['Bajo (30 docs)', 'Medio (60 docs)', 'Alto (120 docs)', 'Pico (200 docs)'];
+        new Chart(document.getElementById('scalabilityChart'), {
             type: 'bar',
             data: {
-                labels: processedScenarioLabels,
+                labels: scaleLabels.map(l => formatLabel(l, 16)),
                 datasets: [
                     {
                         label: 'Costo Operativo (USD)',
-                        data: [35, 65, 115, 155],
+                        data: [30, 55, 95, 135],
                         backgroundColor: '#004d7a',
                         barPercentage: 0.5,
+                        borderRadius: 3,
                         order: 2
                     },
                     {
-                        label: 'Ingreso Ref. SaaS (USD)',
-                        data: [150, 300, 600, 1000],
+                        label: 'Ingreso Ref. Mensual (USD)',
+                        data: [120, 240, 480, 800],
                         type: 'line',
-                        borderColor: '#00bfa5', // Teal line
-                        borderWidth: 2,
+                        borderColor: '#00bfa5',
+                        borderWidth: 2.5,
                         borderDash: [5, 5],
                         pointBackgroundColor: '#fff',
                         pointBorderColor: '#00bfa5',
-                        pointRadius: 4,
-                        tension: 0.1,
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        tension: 0.2,
                         order: 1
                     }
                 ]
@@ -507,40 +876,36 @@
                 maintainAspectRatio: false,
                 plugins: {
                     tooltip: tooltipConfig,
-                    legend: { position: 'bottom' },
+                    legend: { position: 'bottom', labels: { padding: 16 } }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: { borderDash: [2, 2] }
+                        grid: { borderDash: [2, 2] },
+                        ticks: { callback: v => '$' + v }
                     },
-                    x: {
-                        grid: { display: false }
-                    }
+                    x: { grid: { display: false } }
                 }
             }
         });
 
-        // --- CHART 3: ROI Analysis (Horizontal Bar) ---
-        const roiLabels = ['Healthpixel (Mensual)', 'Secretaria (Sueldo)', 'ERP Tradicional', 'Costo 1h Pabellón Vacío'];
-        const processedRoiLabels = roiLabels.map(l => formatLabel(l, 20));
-
-        const ctxROI = document.getElementById('roiChart').getContext('2d');
-        new Chart(ctxROI, {
+        // --- CHART 3: ROI Comparison ---
+        const roiLabels = [
+            'Healthpixel (mensual)',
+            'Coordinador Admin (sueldo)',
+            'ERP Quirúrgico (licencia)',
+            'Pabellón vacío (est. 4h/mes)'
+        ];
+        new Chart(document.getElementById('roiChart'), {
             type: 'bar',
             data: {
-                labels: processedRoiLabels,
+                labels: roiLabels.map(l => formatLabel(l, 22)),
                 datasets: [{
-                    label: 'Costo Estimado (CLP)',
-                    data: [800000, 700000, 2000000, 1250000],
-                    backgroundColor: [
-                        '#004d7a', // Our solution (Primary)
-                        '#cbd5e1', // Gray
-                        '#cbd5e1', // Gray
-                        '#c0392b'  // Alert Red
-                    ],
+                    label: 'Costo Mensual (CLP)',
+                    data: [800000, 1020000, 1800000, 8000000],
+                    backgroundColor: ['#004d7a', '#94a3b8', '#94a3b8', '#c0392b'],
                     barPercentage: 0.6,
-                    borderRadius: 2
+                    borderRadius: 3
                 }]
             },
             options: {
@@ -548,16 +913,20 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    tooltip: tooltipConfig,
+                    tooltip: {
+                        ...tooltipConfig,
+                        callbacks: {
+                            ...tooltipConfig.callbacks,
+                            label: ctx => '$' + ctx.parsed.x.toLocaleString('es-CL') + ' CLP'
+                        }
+                    },
                     legend: { display: false }
                 },
                 scales: {
                     x: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function (value) {
-                                return '$' + value / 1000000 + 'M';
-                            }
+                            callback: v => '$' + (v / 1000000).toFixed(1) + 'M'
                         }
                     }
                 }
