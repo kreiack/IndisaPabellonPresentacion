@@ -44,21 +44,21 @@
             {
                 id: 'portada',
                 content: (
-                    <div className="flex flex-col items-center justify-center h-full text-center px-4 space-y-8 animate-fade-in-up">
-                        <div className="mb-4">
-                            <img src="image copy 4.png" alt="Clínica INDISA" className="h-32 object-contain" />
+                    <div className="flex flex-col items-center justify-center h-full text-center px-4 space-y-4 md:space-y-8 animate-fade-in-up py-8 md:py-0">
+                        <div className="mb-2 md:mb-4">
+                            <img src="image copy 4.png" alt="Clínica INDISA" className="h-20 md:h-32 object-contain" />
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-slate-400 tracking-tight opacity-60 scale-90">
+                        <h1 className="text-3xl md:text-5xl font-extrabold text-slate-400 tracking-tight opacity-60 scale-90">
                             HEALTH<span className="text-teal-600">PIXEL</span>
                         </h1>
-                        <div className="w-24 h-1.5 bg-teal-500 rounded-full my-6"></div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-slate-700 max-w-3xl leading-tight">
+                        <div className="w-16 md:w-24 h-1.5 bg-teal-500 rounded-full my-4 md:my-6"></div>
+                        <h2 className="text-2xl md:text-4xl font-bold text-slate-700 max-w-3xl leading-tight">
                             Propuesta Técnica: Gestión de Pabellones en Clínica INDISA
                         </h2>
-                        <p className="text-xl text-slate-500 max-w-2xl mt-4">
+                        <p className="text-lg md:text-xl text-slate-500 max-w-2xl mt-4">
                             Coordinación quirúrgica inteligente, en tiempo real y sin curva de aprendizaje.
                         </p>
-                        <div className="mt-12 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-teal-700 bg-teal-100">
+                        <div className="mt-8 md:mt-12 inline-flex items-center px-6 py-3 border border-transparent text-sm md:text-base font-medium rounded-full shadow-sm text-teal-700 bg-teal-100">
                             Propuesta Comercial Confidencial • 2026
                         </div>
                     </div>
@@ -117,12 +117,12 @@
             {
                 id: 'solucion-doctor',
                 content: (
-                    <div className="flex flex-col h-full justify-center px-8 md:px-20 animate-fade-in-up">
-                        <h3 className="text-sm font-bold tracking-widest text-teal-600 uppercase mb-3">La Solución</h3>
-                        <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-10">Para el Cirujano</h2>
+                    <div className="flex flex-col h-full justify-center px-4 md:px-20 animate-fade-in-up py-6 md:py-0">
+                        <h3 className="text-xs md:text-sm font-bold tracking-widest text-teal-600 uppercase mb-2 md:mb-3">La Solución</h3>
+                        <h2 className="text-2xl md:text-5xl font-bold text-slate-900 mb-6 md:mb-10">Para el Cirujano</h2>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center h-full">
-                            <div className="flex flex-col justify-center h-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center h-full">
+                            <div className="flex flex-col justify-center h-full order-2 md:order-1">
                                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-bold mb-6 w-fit">
                                     <Smartphone size={16} /> Agente Doctor
                                 </div>
@@ -171,11 +171,11 @@
             {
                 id: 'solucion-dashboard',
                 content: (
-                    <div className="flex flex-col h-full justify-center px-8 md:px-20 animate-fade-in-up">
-                        <h3 className="text-sm font-bold tracking-widest text-teal-600 uppercase mb-3">La Solución</h3>
-                        <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-10">Para Jefatura y Administración</h2>
+                    <div className="flex flex-col h-full justify-center px-4 md:px-20 animate-fade-in-up py-6 md:py-0">
+                        <h3 className="text-xs md:text-sm font-bold tracking-widest text-teal-600 uppercase mb-2 md:mb-3">La Solución</h3>
+                        <h2 className="text-2xl md:text-5xl font-bold text-slate-900 mb-6 md:mb-10">Para Jefatura y Administración</h2>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center h-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center h-full">
                             <div className="bg-slate-800 p-8 rounded-3xl border border-slate-700 flex items-center justify-center h-full">
                                 <img src="image.png" alt="Dashboard Principal" className="rounded-xl shadow-2xl w-full border border-slate-600" />
                             </div>
@@ -489,8 +489,8 @@
                         </div>
                     </header>
 
-                    <main className="flex-1 relative overflow-hidden p-4 md:p-8" onClick={handleImageClick}>
-                        <div className="h-full w-full max-w-7xl mx-auto rounded-3xl bg-transparent transition-opacity duration-500 cursor-pointer">
+                    <main className="flex-1 relative overflow-y-auto md:overflow-hidden p-4 md:p-8" onClick={handleImageClick}>
+                        <div className="md:h-full w-full max-w-7xl mx-auto rounded-3xl bg-transparent transition-opacity duration-500 cursor-pointer min-h-min">
                             {slides[currentSlide].content}
                         </div>
                     </main>
