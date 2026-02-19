@@ -36,7 +36,8 @@
             CheckCircle2,
             TrendingDown,
             CalendarCheck,
-            Zap
+            Zap,
+            X
         } from 'lucide-react';
 
         const slides = [
@@ -434,6 +435,7 @@
 
         function App() {
             const [currentSlide, setCurrentSlide] = useState(0);
+            const [selectedImage, setSelectedImage] = useState(null);
 
             const nextSlide = () => {
                 if (currentSlide < slides.length - 1) {
@@ -447,13 +449,35 @@
                 }
             };
 
+            const handleImageClick = (e) => {
+                if (e.target.tagName === 'IMG' && !e.target.classList.contains('no-preview')) {
+                    setSelectedImage(e.target.src);
+                }
+            };
+
+            const closeModal = () => {
+                setSelectedImage(null);
+            };
+
+            React.useEffect(() => {
+                const handleKeyPress = (e) => {
+                    if (e.key === 'Escape') {
+                        closeModal();
+                    }
+                };
+                if (selectedImage) {
+                    document.addEventListener('keydown', handleKeyPress);
+                    return () => document.removeEventListener('keydown', handleKeyPress);
+                }
+            }, [selectedImage]);
+
             const progress = ((currentSlide + 1) / slides.length) * 100;
 
             return (
                 <div className="h-screen w-full bg-slate-50 flex flex-col font-sans overflow-hidden text-slate-900 selection:bg-teal-200">
                     <header className="px-8 py-5 flex justify-between items-center bg-white border-b border-slate-200 z-50 shrink-0">
                         <div className="font-bold text-xl tracking-tight text-slate-800 flex items-center gap-4">
-                            <img src="image copy 4.png" alt="INDISA" className="h-10" />
+                            <img src="image copy 4.png" alt="INDISA" className="h-10 no-preview" />
                             <div className="h-6 w-px bg-slate-300"></div>
                             <div className="flex items-center gap-2 text-slate-500">
                                 <Activity className="text-teal-600" size={20} />
@@ -465,11 +489,22 @@
                         </div>
                     </header>
 
-                    <main className="flex-1 relative overflow-hidden p-4 md:p-8">
-                        <div className="h-full w-full max-w-7xl mx-auto rounded-3xl bg-transparent transition-opacity duration-500">
+                    <main className="flex-1 relative overflow-hidden p-4 md:p-8" onClick={handleImageClick}>
+                        <div className="h-full w-full max-w-7xl mx-auto rounded-3xl bg-transparent transition-opacity duration-500 cursor-pointer">
                             {slides[currentSlide].content}
                         </div>
                     </main>
+
+                    {selectedImage && (
+                        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[100] backdrop-blur-sm" onClick={closeModal}>
+                            <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+                                <button onClick={closeModal} className="absolute top-4 right-4 text-white bg-black/50 hover:bg-black/70 p-2 rounded-full transition-colors z-10">
+                                    <X size={28} />
+                                </button>
+                                <img src={selectedImage} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+                            </div>
+                        </div>
+                    )}
 
                     <footer className="bg-white border-t border-slate-200 p-4 shrink-0 z-50">
                         <div className="max-w-7xl mx-auto flex items-center justify-between">
